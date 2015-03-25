@@ -1,6 +1,6 @@
 import unittest
 
-from metric import DeltaScoreMetric
+from phylogemetric import DeltaScoreMetric
 
 from data_simple import MATRIX as SIMPLE_MATRIX
 from data_simple import EXPECTED as SIMPLE_EXPECTED
