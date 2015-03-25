@@ -1,7 +1,7 @@
 from math import pow
 from itertools import combinations
 
-from metric import Metric
+from phylogemetric import Metric
 
 class QResidualMetric(Metric):
     """

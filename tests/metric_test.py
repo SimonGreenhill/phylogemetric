@@ -1,5 +1,5 @@
 import unittest
-from metric import Metric
+from phylogemetric import Metric
 
 class TestDist(unittest.TestCase):
     def setUp(self):
