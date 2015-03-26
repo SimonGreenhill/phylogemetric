@@ -30,30 +30,36 @@ class DeltaScoreMetric(Metric):
 
     Returns a dictionary of delta scores for each taxon.
     """
-    def score(self):
-        self.qscores = dict(zip(self.matrix, [[] for _ in self.matrix]))
-        # go through quartet and calculate scores
-        for quartet in combinations(self.matrix, 4):
-            i, j, k, l = quartet
-            dij = self.get_dist(i, j, self.matrix[i], self.matrix[j])
-            dkl = self.get_dist(k, l, self.matrix[k], self.matrix[l])
-            dik = self.get_dist(i, k, self.matrix[i], self.matrix[k])
-            djl = self.get_dist(j, l, self.matrix[j], self.matrix[l])
-            dil = self.get_dist(i, l, self.matrix[i], self.matrix[l])
-            djk = self.get_dist(j, k, self.matrix[j], self.matrix[k])
-
-            m1, m2, m3 = sorted([dij + dkl, dik + djl, dil + djk], reverse=True)
-            denom = (m1 - m3)
-
-            if denom == 0:
-                score = 0.0
-            else:
-                score = (m1 - m2) / denom
-
-            for taxon in quartet:
-                self.qscores[taxon].append(score)
-
+    def _get_score_for_quartet(self, quartet):
+        """Calculates score for given quartet"""
+        i, j, k, l = quartet
+        dij = self.get_dist(i, j, self.matrix[i], self.matrix[j])
+        dkl = self.get_dist(k, l, self.matrix[k], self.matrix[l])
+        dik = self.get_dist(i, k, self.matrix[i], self.matrix[k])
+        djl = self.get_dist(j, l, self.matrix[j], self.matrix[l])
+        dil = self.get_dist(i, l, self.matrix[i], self.matrix[l])
+        djk = self.get_dist(j, k, self.matrix[j], self.matrix[k])
+        
+        m1, m2, m3 = sorted([dij + dkl, dik + djl, dil + djk], reverse=True)
+        denom = (m1 - m3)
+        
+        if denom == 0:
+            return 0.0
+        else:
+            return (m1 - m2) / denom
+    
+    def _summarise_taxon_scores(self):
+        """Summarises quartet scores for each taxon"""
         self.scores = {}
         for taxon in self.qscores:
             self.scores[taxon] = (sum(self.qscores[taxon]) / len(self.qscores[taxon]))
         return self.scores
+    
+    def score(self):
+        self.qscores = dict(zip(self.matrix, [[] for _ in self.matrix]))
+        # go through quartet and calculate scores
+        for quartet in combinations(self.matrix, 4):
+            score = self._get_score_for_quartet(quartet)
+            for taxon in quartet:
+                self.qscores[taxon].append(score)
+        return self._summarise_taxon_scores()
