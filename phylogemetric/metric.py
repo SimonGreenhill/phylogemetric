@@ -4,6 +4,8 @@ class Metric(object):
         self.matrix = matrix
         self.cache = {}
         self.scores = {}
+        if self.matrix:
+            self.taxa = dict([(k,i) for (i,k) in enumerate(self.matrix.keys(), 1)])
     
     def dist(self, a, b):
         """
@@ -26,22 +28,20 @@ class Metric(object):
         
         Handles caching of scores too.
         """
-        
+        cachekey = tuple(sorted([self.taxa[taxon1], self.taxa[taxon2]]))
         # return 0 for identity matches
         if taxon1 == taxon2:
             return 0.0
         # check cache
-        elif (taxon1, taxon2) in self.cache:
-            return self.cache[(taxon1, taxon2)]
-        elif (taxon2, taxon1) in self.cache:
-            return self.cache[(taxon2, taxon1)]
+        elif cachekey in self.cache:
+            return self.cache[cachekey]
         else:
             dist = self.dist(sequence1, sequence2)
-            self.cache[(taxon1, taxon2)] = dist
-            self.cache[(taxon2, taxon1)] = dist
+            self.cache[cachekey] = dist
             return dist
     
     def pprint(self):
         max_len = max([len(_) for _ in self.matrix])
         for taxon in sorted(self.scores):
+            print("%s\t%0.4f" % (taxon.ljust(max_len + 1), self.scores[taxon]))
             print("%s\t%0.4f" % (taxon.ljust(max_len + 1), self.scores[taxon]))
