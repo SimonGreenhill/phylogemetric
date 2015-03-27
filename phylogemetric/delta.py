@@ -63,3 +63,4 @@ class DeltaScoreMetric(Metric):
             for taxon in quartet:
                 self.qscores[taxon].append(score)
         return self._summarise_taxon_scores()
+

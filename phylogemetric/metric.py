@@ -1,3 +1,6 @@
+from operator import mul
+from fractions import Fraction
+
 class Metric(object):
     """Base Metric Class"""
     def __init__(self, matrix=None):
@@ -21,6 +24,13 @@ class Metric(object):
                 same += 1.0
             compared += 1.0
         return 1.0 - (same / compared)
+    
+    def nquartets(self):
+        """Caclulates the number of quartets"""
+        # http://stackoverflow.com/questions/3025162/statistics-combinations-in-python
+        if not hasattr(self, "_nquartets"):
+            self._nquartets = int(reduce(mul, (Fraction(len(self.taxa) - i, i + 1) for i in range(4)), 1))
+        return self._nquartets
     
     def get_dist(self, taxon1, taxon2, sequence1, sequence2):
         """
