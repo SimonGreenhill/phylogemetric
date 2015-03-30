@@ -45,3 +45,4 @@ class Metric(object):
         max_len = max([len(_) for _ in self.matrix])
         for taxon in sorted(self.scores):
             print("%s\t%0.4f" % (taxon.ljust(max_len + 1), self.scores[taxon]))
+    

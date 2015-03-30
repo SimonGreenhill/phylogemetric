@@ -1,6 +1,6 @@
 import unittest
 
-from phylogemetric import QResidualMetric
+from phylogemetric.qresidual import QResidualMetric
 
 from data_simple import MATRIX as SIMPLE_MATRIX
 from data_simple import EXPECTED as SIMPLE_EXPECTED

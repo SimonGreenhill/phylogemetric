@@ -42,3 +42,7 @@ class Test_DeltaScoreMetric_Complex(unittest.TestCase):
             expected = round(self.expected[taxon], 3)
             obtained = round(self.DeltaScoreMetric.scores[taxon], 3)
             assert expected == obtained, "%s %0.5f != %0.5f" % (taxon, obtained, expected)
+
+
+if __name__ == '__main__':
+    unittest.main()

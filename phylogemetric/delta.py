@@ -24,6 +24,7 @@ from metric import Metric
 #     - all distances need to be rescaled before computing Q.
 #         -> make average of distances between taxa =1
 # 
+
 class DeltaScoreMetric(Metric):
     """
     Calculates the Delta Score (Holland et al. 2002) for a nexus file.
@@ -52,14 +53,15 @@ class DeltaScoreMetric(Metric):
         """Summarises quartet scores for each taxon"""
         self.scores = {}
         for taxon in self.qscores:
-            self.scores[taxon] = (sum(self.qscores[taxon]) / len(self.qscores[taxon]))
+            self.scores[taxon] = self.qscores[taxon][0] / self.qscores[taxon][1]
         return self.scores
     
     def score(self):
-        self.qscores = dict(zip(self.matrix, [[] for _ in self.matrix]))
+        self.qscores = dict(zip(self.matrix, [[0, 0] for _ in self.matrix]))
         # go through quartet and calculate scores
         for quartet in combinations(self.matrix, 4):
             score = self._get_score_for_quartet(quartet)
             for taxon in quartet:
-                self.qscores[taxon].append(score)
+                self.qscores[taxon][0] += score
+                self.qscores[taxon][1] += 1
         return self._summarise_taxon_scores()

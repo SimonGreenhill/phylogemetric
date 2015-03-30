@@ -3,6 +3,7 @@ from itertools import combinations
 
 from metric import Metric
 
+
 class QResidualMetric(Metric):
     """
     Calculates the Q-Residual Score (Gray et al. 2010) for a nexus file.
@@ -28,17 +29,18 @@ class QResidualMetric(Metric):
         scale = scale * scale
         self.scores = {}
         for taxon in self.qscores:
-            numerator = [q/scale for q in self.qscores[taxon]]
-            self.scores[taxon] = (sum(numerator) / len(self.qscores[taxon]))
+            numerator = self.qscores[taxon][0] / scale
+            self.scores[taxon] = numerator / self.qscores[taxon][1]
         return self.scores
     
     def score(self):
-        self.qscores = dict(zip(self.matrix, [[] for _ in self.matrix]))
+        self.qscores = dict(zip(self.matrix, [[0,0] for _ in self.matrix]))
         # go through quartet and calculate scores
         for quartet in combinations(self.matrix, 4):
             score = self._get_score_for_quartet(quartet)
             for taxon in quartet:
-                self.qscores[taxon].append(score)
+                self.qscores[taxon][0] += score
+                self.qscores[taxon][1] += 1
         return self._summarise_taxon_scores()
 
     def get_average_distance(self):
