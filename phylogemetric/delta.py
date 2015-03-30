@@ -65,3 +65,4 @@ class DeltaScoreMetric(Metric):
                 self.qscores[taxon][0] += score
                 self.qscores[taxon][1] += 1
         return self._summarise_taxon_scores()
+
