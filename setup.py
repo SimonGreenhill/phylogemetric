@@ -1,6 +1,5 @@
-# Always prefer setuptools over distutils
+#!/usr/bin/env python
 from setuptools import setup, find_packages
-# To use a consistent encoding
 from codecs import open
 from os import path
 
@@ -38,6 +37,6 @@ setup(
     packages=['phylogemetric'],
     package_dir={'phylogemetric': 'phylogemetric'},
     install_requires=['python-nexus'],
-    scripts=['phylogemetric/bin/phylogemetric.py'],
+    scripts=['phylogemetric/bin/phylogemetric.python'],
     test_suite="tests",
 )
