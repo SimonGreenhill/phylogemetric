@@ -6,4 +6,4 @@ Python library for calculating delta score (Holland et al. 2002) and Q-Residual 
 
 ## Acknowledgements:
 
-* David Bryant
+* Thanks to David Bryant for helping write the Q-Residual code.
