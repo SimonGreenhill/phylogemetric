@@ -1,6 +1,6 @@
 from itertools import combinations
 
-from metric import Metric
+from .metric import Metric
 
 # Delta Score
 #  - scores each taxon for how often it's involved in conflicting signal

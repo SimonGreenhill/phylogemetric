@@ -1,5 +1,6 @@
 from operator import mul
 from fractions import Fraction
+from functools import reduce
 
 class Metric(object):
     """Base Metric Class"""

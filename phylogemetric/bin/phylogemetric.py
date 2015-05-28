@@ -6,19 +6,16 @@ __copyright__ = 'Copyright (c) 2015 Simon J. Greenhill'
 __license__ = 'New-style BSD'
 __package__ = 'phylogemetric'
 import os
-import sys
-sys.path.insert(0, os.path.split(os.path.split(os.path.abspath(__file__))[0])[0])
 
 try:
     from nexus import NexusReader
 except ImportError:
     raise ImportError("Please install python-nexus")
 
-from delta import DeltaScoreMetric
-from qresidual import QResidualMetric
+from phylogemetric.delta import DeltaScoreMetric
+from phylogemetric.qresidual import QResidualMetric
 
-
-if __name__ == '__main__':
+def main(args=None):
     import argparse
     parser = argparse.ArgumentParser(
         description='Calculates a phylogenetic network metric from a nexus file'
@@ -43,3 +40,7 @@ if __name__ == '__main__':
     
     metric.score()
     metric.pprint()
+    
+
+if __name__ == '__main__':
+    main()
