@@ -28,7 +28,6 @@ class Test_DeltaScoreMetric_Simple(unittest.TestCase):
     
     def test_E(self):
         assert round(self.DeltaScoreMetric.scores['E'], 5) == self.expected['E']
-    
 
 
 class Test_DeltaScoreMetric_Complex(unittest.TestCase):

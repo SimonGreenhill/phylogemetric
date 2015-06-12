@@ -1,5 +1,6 @@
 from operator import mul
 from fractions import Fraction
+from itertools import combinations
 from functools import reduce
 
 class Metric(object):
@@ -8,8 +9,13 @@ class Metric(object):
         self.matrix = matrix
         self.cache = {}
         self.scores = {}
+        self.qscores = None
         if self.matrix:
             self.taxa = dict([(k,i) for (i,k) in enumerate(self.matrix.keys(), 1)])
+            self._setup_qscores()
+            
+    def _setup_qscores(self):
+        self.qscores = dict(zip(self.matrix, [[0,0] for _ in self.matrix]))
     
     def dist(self, a, b):
         """
@@ -36,8 +42,6 @@ class Metric(object):
     def get_dist(self, taxon1, taxon2, sequence1, sequence2):
         """
         Gets distance between sequence1 and sequence2
-        
-        Handles caching of scores too.
         """
         cachekey = tuple(sorted([self.taxa[taxon1], self.taxa[taxon2]]))
         # return 0 for identity matches
@@ -50,6 +54,25 @@ class Metric(object):
             dist = self.dist(sequence1, sequence2)
             self.cache[cachekey] = dist
             return dist
+    
+    def score(self):
+        """Returns a dictionary of metric scores"""
+        if not self.qscores:
+            self._setup_qscores()
+        # go through quartet and calculate scores
+        for quartet in combinations(self.matrix, 4):
+            score = self._get_score_for_quartet(quartet)
+            for taxon in quartet:
+                self.qscores[taxon][0] += score
+                self.qscores[taxon][1] += 1
+        return self._summarise_taxon_scores()
+    
+    def _summarise_taxon_scores(self):
+        """Summarises quartet scores for each taxon"""
+        self.scores = {}
+        for taxon in self.qscores:
+            self.scores[taxon] = self.qscores[taxon][0] / self.qscores[taxon][1]
+        return self.scores
     
     def pprint(self):
         max_len = max([len(_) for _ in self.matrix])

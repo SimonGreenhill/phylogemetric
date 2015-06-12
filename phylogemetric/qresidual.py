@@ -1,5 +1,4 @@
 from math import pow
-from itertools import combinations
 
 from .metric import Metric
 
@@ -33,15 +32,5 @@ class QResidualMetric(Metric):
             self.scores[taxon] = numerator / self.qscores[taxon][1]
         return self.scores
     
-    def score(self):
-        self.qscores = dict(zip(self.matrix, [[0,0] for _ in self.matrix]))
-        # go through quartet and calculate scores
-        for quartet in combinations(self.matrix, 4):
-            score = self._get_score_for_quartet(quartet)
-            for taxon in quartet:
-                self.qscores[taxon][0] += score
-                self.qscores[taxon][1] += 1
-        return self._summarise_taxon_scores()
-
     def get_average_distance(self):
         return sum(self.cache.values()) / len(self.cache.values())

@@ -1,5 +1,3 @@
-from itertools import combinations
-
 from .metric import Metric
 
 # Delta Score
@@ -49,20 +47,3 @@ class DeltaScoreMetric(Metric):
         else:
             return (m1 - m2) / denom
     
-    def _summarise_taxon_scores(self):
-        """Summarises quartet scores for each taxon"""
-        self.scores = {}
-        for taxon in self.qscores:
-            self.scores[taxon] = self.qscores[taxon][0] / self.qscores[taxon][1]
-        return self.scores
-    
-    def score(self):
-        self.qscores = dict(zip(self.matrix, [[0, 0] for _ in self.matrix]))
-        # go through quartet and calculate scores
-        for quartet in combinations(self.matrix, 4):
-            score = self._get_score_for_quartet(quartet)
-            for taxon in quartet:
-                self.qscores[taxon][0] += score
-                self.qscores[taxon][1] += 1
-        return self._summarise_taxon_scores()
-
