@@ -3,6 +3,7 @@ from fractions import Fraction
 from itertools import combinations
 from functools import reduce
 
+
 class Metric(object):
     """Base Metric Class"""
     def __init__(self, matrix=None):
