@@ -11,7 +11,7 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='phylogemetric',
-    version='0.9.4',
+    version='0.9.5',
     description='A python library for calculating the delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010)',
     long_description=long_description,
     url='https://github.com/SimonGreenhill/phylogemetric',
@@ -38,7 +38,7 @@ setup(
     install_requires=['nose', 'python-nexus'],
     #scripts=['phylogemetric/bin/phylogemetric.py'],
     entry_points={
-       'console_scripts': ['phylogemetric = phylogemetric.bin.phylogemetric:main'],
+       'console_scripts': ['phylogemetric=phylogemetric.bin.phylogemetric:main'],
     },
     test_suite = 'nose.collector',
 )
