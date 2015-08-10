@@ -1,14 +1,15 @@
 # phylogemetric
 
-https://travis-ci.org/SimonGreenhill/phylogemetric.svg?branch=master
+A python library for calculating delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010) for phylogenetic data.
 
-Python library for calculating delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010)
+[![Build Status](https://travis-ci.org/SimonGreenhill/phylogemetric.svg?branch=master)](https://travis-ci.org/SimonGreenhill/phylogemetric)
+
 
 ## Usage: Command line
 
 Basic usage: 
 
-```
+```shell
 > phylogemetric
 
 usage: phylogemetric [-h] method filename
@@ -16,6 +17,7 @@ usage: phylogemetric [-h] method filename
 
 Calculate delta score for filename example.nex:
 
+```shell
 > phylogemetric delta example.nex
 
 taxon1              0.2453
@@ -26,7 +28,7 @@ taxon3              0.2954
 
 Calculate qresidual score for filename example.nex:
 
-```
+```shell
 > phylogemetric qresidual example.nex
 
 taxon1              0.0030
@@ -37,7 +39,7 @@ taxon3              0.0063
 
 Note: to save the results to a file use shell piping e.g.:
 
-```
+```shell
 > phylogemetric qresidual example.nex > qresidual.txt
 ```
 
@@ -91,7 +93,6 @@ m = DeltaScoreMetric(matrix)
 
 # calculates the number of quartets in the data:
 m.nquartets()
-
 
 # returns the distance between two sequences:
 m.dist(['1', '1', '0'], ['0', '1', '0'])
