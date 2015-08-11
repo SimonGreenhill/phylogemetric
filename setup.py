@@ -11,14 +11,14 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='phylogemetric',
-    version='0.9.5',
+    version='1.0rc1',
     description='A python library for calculating the delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010)',
     long_description=long_description,
     url='https://github.com/SimonGreenhill/phylogemetric',
     author='Simon J. Greenhill',
     author_email='simon@simon.net.nz',
     license='BSD',
-
+    zip_safe=True,
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         "Intended Audience :: Science/Research",
@@ -32,13 +32,15 @@ setup(
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
     keywords='phylogenetics delta-score q-residual',
     packages=find_packages(),
-    install_requires=['nose', 'python-nexus'],
-    #scripts=['phylogemetric/bin/phylogemetric.py'],
+    install_requires=['python-nexus'],
     entry_points={
-       'console_scripts': ['phylogemetric=phylogemetric.bin.phylogemetric:main'],
+       'console_scripts': [
+           'phylogemetric = phylogemetric.bin.phylogemetric:main'
+       ],
     },
     test_suite = 'nose.collector',
 )
