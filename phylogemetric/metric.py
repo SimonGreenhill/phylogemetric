@@ -12,11 +12,13 @@ class Metric(object):
         self.scores = {}
         self.qscores = None
         if self.matrix:
-            self.taxa = dict([(k,i) for (i,k) in enumerate(self.matrix.keys(), 1)])
+            self.taxa = dict([
+                (k, i) for (i, k) in enumerate(self.matrix.keys(), 1)
+            ])
             self._setup_qscores()
             
     def _setup_qscores(self):
-        self.qscores = dict(zip(self.matrix, [[0,0] for _ in self.matrix]))
+        self.qscores = dict(zip(self.matrix, [[0, 0] for _ in self.matrix]))
     
     def dist(self, a, b):
         """
@@ -37,7 +39,9 @@ class Metric(object):
         """Caclulates the number of quartets"""
         # http://stackoverflow.com/questions/3025162/statistics-combinations-in-python
         if not hasattr(self, "_nquartets"):
-            self._nquartets = int(reduce(mul, (Fraction(len(self.taxa) - i, i + 1) for i in range(4)), 1))
+            self._nquartets = int(reduce(
+                mul, (Fraction(len(self.taxa) - i, i + 1) for i in range(4)), 1
+            ))
         return self._nquartets
     
     def get_dist(self, taxon1, taxon2, sequence1, sequence2):
@@ -55,6 +59,15 @@ class Metric(object):
             dist = self.dist(sequence1, sequence2)
             self.cache[cachekey] = dist
             return dist
+    
+    def _get_score_for_quartet(self, quartet):
+        """
+        Calculates score for given quartet
+        
+        NOTE: needs to be overridden in subclass. Here it
+        just returns 0.0
+        """
+        return 0.0
     
     def score(self):
         """Returns a dictionary of metric scores"""

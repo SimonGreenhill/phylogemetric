@@ -6,7 +6,7 @@ from .metric import Metric
 class QResidualMetric(Metric):
     """
     Calculates the Q-Residual Score (Gray et al. 2010) for a nexus file.
-
+    
     Returns a dictionary of Q-Residual scores for each taxon
     """
     def _get_score_for_quartet(self, quartet):
@@ -34,3 +34,4 @@ class QResidualMetric(Metric):
     
     def get_average_distance(self):
         return sum(self.cache.values()) / len(self.cache.values())
+
