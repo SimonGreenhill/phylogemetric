@@ -2,7 +2,7 @@
 #coding=utf-8
 """Calculates a network metric"""
 __author__ = 'Simon J. Greenhill <simon@simon.net.nz>'
-__copyright__ = 'Copyright (c) 2015 Simon J. Greenhill'
+__copyright__ = 'Copyright (c) 2015-2016 Simon J. Greenhill'
 __license__ = 'New-style BSD'
 __package__ = 'phylogemetric'
 
@@ -18,9 +18,8 @@ from . import DeltaScoreMetric
 from . import QResidualMetric
 
 def main(args=None):
-    parser = argparse.ArgumentParser(
-        description='Calculates a phylogenetic network metric from a nexus file'
-    )
+    descr = 'Calculates a phylogenetic network metric from a nexus file'
+    parser = argparse.ArgumentParser(description=descr)
     parser.add_argument("method", help="Method [delta/qresidual]")
     parser.add_argument("filename", help="nexusfile")
     args = parser.parse_args()
