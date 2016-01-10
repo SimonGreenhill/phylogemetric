@@ -6,5 +6,9 @@ python:
   - "3.5-dev"
 install:
   - "pip install -r requirements.txt"
+  - "pip install pytest"
+  - "pip install pytest-cov"
+  - "pip install coveralls"
   - "pip install ."
-script: nosetests
+script:
+    py.test --cov
