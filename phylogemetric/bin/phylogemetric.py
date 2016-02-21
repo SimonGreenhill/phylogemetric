@@ -7,6 +7,7 @@ __license__ = 'New-style BSD'
 __package__ = 'phylogemetric'
 
 import os
+import sys
 import argparse
 
 try:
@@ -17,30 +18,39 @@ except ImportError:
 from . import DeltaScoreMetric
 from . import QResidualMetric
 
-def main(args=None):
+def parse_args(*args):
+    """
+    Parses command line arguments
+    
+    Returns a tuple of (metric, filename)
+    """
     descr = 'Calculates a phylogenetic network metric from a nexus file'
     parser = argparse.ArgumentParser(description=descr)
     parser.add_argument("method", help="Method [delta/qresidual]")
     parser.add_argument("filename", help="nexusfile")
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     
     if not os.path.isfile(args.filename):
         raise IOError("File %s does not exist" % args.filename)
-    nex = NexusReader(args.filename)
     
-    if args.method in ('q', 'qresidual'):
-        metric = QResidualMetric(nex.data.matrix)
+    if args.method in ('q', 'qres', 'qresidual'):
+        metric = QResidualMetric
     elif args.method in ('d', 'delta'):
-        metric = DeltaScoreMetric(nex.data.matrix)
+        metric = DeltaScoreMetric
     else:
         raise SystemExit(
             "Unknown method %s. Please choose either 'delta' or 'q'"
             % args.method
         )
+    return (metric, args.filename)
     
-    metric.score()
-    metric.pprint()
+
+def main(metric, filename):
+    nex = NexusReader(filename)
+    M = metric(nex.data.matrix)
+    M.score()
+    M.pprint()
     
 
 if __name__ == '__main__':
-    main()
+    main(*parse_args(*sys.argv[1:]))
