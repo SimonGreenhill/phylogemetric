@@ -45,12 +45,12 @@ def parse_args(*args):
     return (metric, args.filename)
     
 
-def main(metric, filename):
+def main(args=None):
+    if args is None:
+        args = sys.argv[1:]
+    metric, filename = parse_args(*args)
     nex = NexusReader(filename)
     M = metric(nex.data.matrix)
     M.score()
     M.pprint()
-    
 
-if __name__ == '__main__':
-    main(*parse_args(*sys.argv[1:]))
