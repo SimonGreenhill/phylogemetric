@@ -11,7 +11,7 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='phylogemetric',
-    version='1.0rc1',
+    version='1.0.0',
     description='A python library for calculating the delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010)',
     long_description=long_description,
     url='https://github.com/SimonGreenhill/phylogemetric',
