@@ -1,6 +1,6 @@
 import unittest
 from phylogemetric.metric import Metric
-from data_simple import MATRIX
+from phylogemetric.tests.data_simple import MATRIX
 
 class TestDist(unittest.TestCase):
     def setUp(self):

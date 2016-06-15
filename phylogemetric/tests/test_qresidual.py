@@ -2,11 +2,11 @@ import unittest
 
 from phylogemetric.qresidual import QResidualMetric
 
-from data_simple import MATRIX as SIMPLE_MATRIX
-from data_simple import EXPECTED as SIMPLE_EXPECTED
+from phylogemetric.tests.data_simple import MATRIX as SIMPLE_MATRIX
+from phylogemetric.tests.data_simple import EXPECTED as SIMPLE_EXPECTED
 
-from data_complex import MATRIX as COMPLEX_MATRIX
-from data_complex import EXPECTED as COMPLEX_EXPECTED
+from phylogemetric.tests.data_complex import MATRIX as COMPLEX_MATRIX
+from phylogemetric.tests.data_complex import EXPECTED as COMPLEX_EXPECTED
 
 class Test_QResidualMetric_Simple(unittest.TestCase):
     def setUp(self):
