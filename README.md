@@ -4,6 +4,7 @@ A python library for calculating delta score (Holland et al. 2002) and Q-Residua
 
 [![Build Status](https://travis-ci.org/SimonGreenhill/phylogemetric.svg?branch=master)](https://travis-ci.org/SimonGreenhill/phylogemetric)
 [![Coverage Status](https://coveralls.io/repos/SimonGreenhill/phylogemetric/badge.svg?branch=master&service=github)](https://coveralls.io/github/SimonGreenhill/phylogemetric?branch=master)
+[![DOI](https://zenodo.org/badge/22704/SimonGreenhill/phylogemetric.svg)](https://zenodo.org/badge/latestdoi/22704/SimonGreenhill/phylogemetric)
 
 
 ## Usage: Command line
