@@ -1,0 +1,23 @@
+{
+  "@context": "https://raw.githubusercontent.com/mbjones/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+    {
+      "@id": "http://orcid.org/0000-0001-7832-6156",
+      "@type": "Person",
+      "email": "simon@simon.net.nz",
+      "name": "Simon J. Greenhill",
+      "affiliation": "ARC Centre of Excellence for the Dynamics of Language, Australian National University"
+    }
+  ],
+  "identifier": "http://dx.doi.org/10.5281/zenodo.55663",
+  "codeRepository": "https://github.com/SimonGreenhill/phylogemetric",
+  "datePublished": "2016-06-15",
+  "dateModified": "2016-06-15",
+  "dateCreated": "2016-06-15",
+  "description": "A Python library for calculating the delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010)",
+  "keywords": "phylogenetic, language evolution, cultural evolution, network metrics",
+  "license": "BSD",
+  "title": "phylogemetric",
+  "version": "v1.0.0"
+}

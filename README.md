@@ -114,4 +114,4 @@ m.pprint()
 
 ## Acknowledgements:
 
-* Thanks to David Bryant for helping write the Q-Residual code.
+* Thanks to David Bryant for clarifying the Q-Residual code.
