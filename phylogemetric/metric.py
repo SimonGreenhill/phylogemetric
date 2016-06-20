@@ -85,7 +85,9 @@ class Metric(object):
         """Summarises quartet scores for each taxon"""
         self.scores = {}
         for taxon in self.qscores:
-            self.scores[taxon] = self.qscores[taxon][0] / self.qscores[taxon][1]
+            self.scores[taxon] = (
+                self.qscores[taxon][0] / self.qscores[taxon][1]
+            )
         return self.scores
     
     def pprint(self):

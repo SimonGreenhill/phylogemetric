@@ -14,7 +14,7 @@ class TestScript(unittest.TestCase):
             parse_args("PefectMethod", __file__)
     
     def test_parse_args_qresidual(self):
-        assert parse_args("q",  __file__)[0] == QResidualMetric
+        assert parse_args("q", __file__)[0] == QResidualMetric
         assert parse_args("qres", __file__)[0] == QResidualMetric
         assert parse_args("qresidual", __file__)[0] == QResidualMetric
     
