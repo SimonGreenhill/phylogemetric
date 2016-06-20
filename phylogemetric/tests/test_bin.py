@@ -1,11 +1,25 @@
+import os
+import re
+import sys
 import unittest
 
+# do not want to use the unified io.* library on py2.7 as we get a TypeError:
+#   TypeError: unicode argument expected, got 'str'
+# for TestMetric.test_pprint
+try:
+    from StringIO import StringIO
+except:
+    from io import StringIO
+    
 from phylogemetric.qresidual import QResidualMetric
 from phylogemetric.delta import DeltaScoreMetric
-from phylogemetric.bin.phylogemetric import parse_args
+from phylogemetric.bin.phylogemetric import parse_args, main
 from phylogemetric.bin.create_random_nexus import create_nex
+from phylogemetric.tests.data_simple import EXPECTED
 
-class TestScript(unittest.TestCase):
+TEST_NEXUS_FILE = os.path.join(os.path.dirname(__file__), '../data', 'test.nex')
+
+class Test_ParseArgs(unittest.TestCase):
     def test_parse_args_fail_on_missing_file(self):
         with self.assertRaises(IOError):
             parse_args("qresidual", "sausage.nex")
@@ -24,7 +38,36 @@ class TestScript(unittest.TestCase):
         assert parse_args("delta", __file__)[0] == DeltaScoreMetric
 
 
-class TestCreateNex(unittest.TestCase):
+class Test_Main(unittest.TestCase):
+    def test_main(self):
+        stdout = sys.stdout
+        sys.stdout = StringIO()
+        main(args=['delta', TEST_NEXUS_FILE])
+        out = sys.stdout.getvalue()
+        sys.stdout.close()
+        sys.stdout = stdout
+        
+        for taxon in sorted(EXPECTED):
+            line = r"""%s\s+%f""" % (taxon, EXPECTED[taxon]['delta'])
+            assert len(re.findall(line, out)) == 1, 'Expected %r' % line
+    
+    def test_sys_argv(self):
+        stdout = sys.stdout
+        argv = sys.argv
+        sys.stdout = StringIO()
+        sys.argv = ["testcase", "qres", TEST_NEXUS_FILE]
+        main()
+        out = sys.stdout.getvalue()
+        sys.stdout.close()
+        sys.stdout = stdout
+        sys.argv = argv
+        
+        for taxon in sorted(EXPECTED):
+            line = r"""%s\s+%f""" % (taxon, EXPECTED[taxon]['q'])
+            assert len(re.findall(line, out)) == 1, 'Expected %r' % line
+        
+
+class Test_CreateNex(unittest.TestCase):
     def setUp(self):
         self.nex = create_nex(3, 3, list('acgt'))
     
