@@ -7,7 +7,7 @@ release:
 	python setup.py sdist bdist_wheel upload
 
 test:
-	py.test --cov phylogemetric
+	py.test --cov phylogemetric/
 
 clean:
 	find . -name __pycache__ | xargs rm -rf

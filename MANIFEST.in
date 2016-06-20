@@ -1,11 +1,13 @@
 include DESCRIPTION.rst
 include LICENSE
+include *.nex
 exclude .gitignore
 exclude .coverage
 exclude .travis.yml
 prune .cache
 prune .git
 prune build
+prune paper
 prune dist
 recursive-include tests *
 

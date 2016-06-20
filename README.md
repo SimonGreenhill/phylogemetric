@@ -1,11 +1,18 @@
 # phylogemetric
 
-A python library for calculating delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010) for phylogenetic data.
+A python library for calculating delta score ([Holland et al. 2002](http://mbe.oxfordjournals.org/content/19/12/2051.full)) and Q-Residual ([Gray et al. 2010](http://dx.doi.org/10.1098/rstb.2010.0162)) for phylogenetic data.
 
 [![Build Status](https://travis-ci.org/SimonGreenhill/phylogemetric.svg?branch=master)](https://travis-ci.org/SimonGreenhill/phylogemetric)
 [![Coverage Status](https://coveralls.io/repos/SimonGreenhill/phylogemetric/badge.svg?branch=master&service=github)](https://coveralls.io/github/SimonGreenhill/phylogemetric?branch=master)
 [![DOI](https://zenodo.org/badge/22704/SimonGreenhill/phylogemetric.svg)](https://zenodo.org/badge/latestdoi/22704/SimonGreenhill/phylogemetric)
 
+## Installation:
+
+Installation is only a pip install away:
+
+```shell
+pip install phylogemetric
+```
 
 ## Usage: Command line
 
@@ -107,10 +114,19 @@ m.pprint()
 
 ```
 
-
 ## Requirements:
 
 * python-nexus >= 1.1
+
+## Performance Notes:
+
+Currently _phylogemetric_ is implemented in python, and the Delta/Q-Residual algorithms are O(n). This means
+that performance is not optimal, and it may take a while to calculate these metrics for datasets with more than
+100 taxa or so. 
+
+I hope to improve performance in the near future, but in the meantime, if this is an issue for you then try 
+using the implementations available in [SplitsTree](http://splitstree.org).
+
 
 ## Acknowledgements:
 
