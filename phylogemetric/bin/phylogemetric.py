@@ -12,7 +12,7 @@ import argparse
 
 try:
     from nexus import NexusReader
-except ImportError:
+except ImportError:  # pragma: no cover
     raise ImportError("Please install python-nexus")
 
 from . import DeltaScoreMetric
