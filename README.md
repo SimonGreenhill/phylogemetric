@@ -6,7 +6,7 @@ A python library for calculating delta score ([Holland et al. 2002](http://mbe.o
 [![Coverage Status](https://coveralls.io/repos/SimonGreenhill/phylogemetric/badge.svg?branch=master&service=github)](https://coveralls.io/github/SimonGreenhill/phylogemetric?branch=master)
 [![DOI](https://zenodo.org/badge/22704/SimonGreenhill/phylogemetric.svg)](https://zenodo.org/badge/latestdoi/22704/SimonGreenhill/phylogemetric)
 [![License](https://img.shields.io/pypi/l/phylogemetric.svg)](https://github.com/SimonGreenhill/phylogemetric/blob/master/LICENSE)
-[![JOSS](http://joss.theoj.org/papers/10.21105/joss.00028)](http://joss.theoj.org/papers/10.21105/joss.00028/status.svg)
+[![JOSS](http://joss.theoj.org/papers/10.21105/joss.00028/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00028)
 
 ## Installation:
 
