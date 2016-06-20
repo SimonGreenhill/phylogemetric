@@ -21,7 +21,6 @@ setup(
     author_email='simon@simon.net.nz',
     license='BSD',
     zip_safe=True,
-    # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: BSD License",
