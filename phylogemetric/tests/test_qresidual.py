@@ -44,6 +44,5 @@ class Test_QResidualMetric_Complex(unittest.TestCase):
                 )
 
 
-
 if __name__ == '__main__':
     unittest.main()

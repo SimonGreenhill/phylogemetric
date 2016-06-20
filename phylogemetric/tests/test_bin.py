@@ -23,3 +23,5 @@ class TestScript(unittest.TestCase):
         assert parse_args("delta", __file__)[0] == DeltaScoreMetric
 
 
+if __name__ == '__main__':
+    unittest.main()
