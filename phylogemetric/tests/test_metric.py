@@ -1,9 +1,18 @@
 import re
 import sys
 import unittest
-from io import StringIO
+
+# do not want to use the unified io.* library on py2.7 as we get a TypeError:
+#   TypeError: unicode argument expected, got 'str'
+# for TestMetric.test_pprint
+try:
+    from StringIO import StringIO
+except:
+    from io import StringIO
+    
 from phylogemetric.metric import Metric
 from phylogemetric.tests.data_simple import MATRIX
+
 
 class TestDist(unittest.TestCase):
     def setUp(self):
