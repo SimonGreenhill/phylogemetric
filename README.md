@@ -131,3 +131,4 @@ using the implementations available in [SplitsTree](http://splitstree.org).
 ## Acknowledgements:
 
 * Thanks to David Bryant for clarifying the Q-Residual code.
+* Thanks to [Kristian Rother](https://github.com/krother) for code quality suggestions.
