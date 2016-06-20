@@ -118,6 +118,16 @@ m.pprint()
 
 * python-nexus >= 1.1
 
+## Performance Notes:
+
+Currently _phylogemetric_ is implemented in python, and the Delta/Q-Residual algorithms are O(n). This means
+that performance is not optimal, and it may take a while to calculate these metrics for datasets with more than
+100 taxa or so. 
+
+I hope to improve performance in the near future, but in the meantime, if this is an issue for you then try 
+using the implementations available in [SplitsTree](http://splitstree.org).
+
+
 ## Acknowledgements:
 
 * Thanks to David Bryant for clarifying the Q-Residual code.
