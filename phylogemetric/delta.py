@@ -38,10 +38,8 @@ class DeltaScoreMetric(Metric):
         djl = self.get_dist(j, l, self.matrix[j], self.matrix[l])
         dil = self.get_dist(i, l, self.matrix[i], self.matrix[l])
         djk = self.get_dist(j, k, self.matrix[j], self.matrix[k])
-
         m1, m2, m3 = sorted([dij + dkl, dik + djl, dil + djk], reverse=True)
         denom = (m1 - m3)
-
         if denom == 0:
             return 0.0
         else:
