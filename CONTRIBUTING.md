@@ -21,7 +21,7 @@ Make your change.
 
 Write tests.
 
-Follow the PEP8 [https://www.python.org/dev/peps/pep-0008/][style guide].
+Follow the [PEP8 style guide](https://www.python.org/dev/peps/pep-0008/).
 
 Make the tests pass:
 
