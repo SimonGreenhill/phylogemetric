@@ -54,6 +54,13 @@ Note: to save the results to a file use shell piping e.g.:
 > phylogemetric qresidual example.nex > qresidual.txt
 ```
 
+### Speeding things up by using multiple processes.
+
+You can tell phylogemetric to use multiple cores with the `-w/--workers` argument:
+
+```shell
+> phylogemetric -w 4 qresidual example.nex
+```
 
 ## Usage: Library
 
@@ -103,6 +110,7 @@ Class Methods:
 m = DeltaScoreMetric(matrix)
 
 # calculates the number of quartets in the data:
+
 m.nquartets()
 
 # returns the distance between two sequences:
@@ -110,6 +118,8 @@ m.dist(['1', '1', '0'], ['0', '1', '0'])
 
 # gets a dictionary of metric scores:
 m.score()
+m.score(workers=4) # with multiple processes.
+
 
 # pretty prints the metric scores:
 m.pprint()
@@ -124,7 +134,7 @@ m.pprint()
 
 Currently _phylogemetric_ is implemented in python, and the Delta/Q-Residual algorithms are O(n). This means
 that performance is not optimal, and it may take a while to calculate these metrics for datasets with more than
-100 taxa or so. 
+100 taxa or so. To help speed this up, use the multiple processes argument `-w/--workers` at the command line or by passing `workers=n` to the `score` function.
 
 I hope to improve performance in the near future, but in the meantime, if this is an issue for you then try 
 using the implementations available in [SplitsTree](http://splitstree.org).
@@ -137,6 +147,12 @@ If you use _phylogemetric_, please cite:
 Greenhill, SJ. 2016. Phylogemetric: A Python library for calculating phylogenetic network metrics. Journal of Open Source Software.
 http://dx.doi.org/10.21105/joss.00028
 ```
+
+## Changelog:
+
+* 1.1.0:
+- Added support for multiple processes.
+- Removed python 2 support.
 
 ## Acknowledgements:
 
