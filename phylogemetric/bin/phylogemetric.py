@@ -28,6 +28,11 @@ def parse_args(*args):
     parser = argparse.ArgumentParser(description=descr)
     parser.add_argument("method", help="Method [delta/qresidual]")
     parser.add_argument("filename", help="nexusfile")
+    parser.add_argument(
+            '-w', "--workers", dest='workers',
+            action='store', type=int, default=1,
+            help="set number of workers"
+    )
     args = parser.parse_args(args)
     
     if not os.path.isfile(args.filename):
@@ -42,15 +47,15 @@ def parse_args(*args):
             "Unknown method %s. Please choose either 'delta' or 'q'"
             % args.method
         )
-    return (metric, args.filename)
+    return (metric, args.filename, args.workers)
     
 
 def main(args=None):
     if args is None:
         args = sys.argv[1:]
-    metric, filename = parse_args(*args)
+    metric, filename, workers = parse_args(*args)
     nex = NexusReader(filename)
     M = metric(nex.data.matrix)
-    M.score()
+    M.score(workers=workers)
     M.pprint()
 

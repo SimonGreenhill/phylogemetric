@@ -1,3 +1,4 @@
+import warnings
 from math import pow
 
 from .metric import Metric
@@ -24,8 +25,7 @@ class QResidualMetric(Metric):
     
     def _summarise_taxon_scores(self):
         """Summarises quartet scores for each taxon"""
-        scale = self.get_average_distance()
-        scale = scale * scale
+        scale = pow(self.get_average_distance(), 2)
         self.scores = {}
         for taxon in self.qscores:
             numerator = self.qscores[taxon][0] / scale
@@ -33,5 +33,8 @@ class QResidualMetric(Metric):
         return self.scores
     
     def get_average_distance(self):
-        return sum(self.cache.values()) / len(self.cache.values())
-
+        try:
+            return sum(self.cache.values()) / len(self.cache.values())
+        except ZeroDivisionError:
+            warnings.warn("Zero Division")
+            return 0

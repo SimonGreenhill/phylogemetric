@@ -1,3 +1,4 @@
+import multiprocessing
 from operator import mul
 from fractions import Fraction
 from itertools import combinations
@@ -10,6 +11,7 @@ class Metric(object):
         self.matrix = matrix
         self.cache = {}
         self.scores = {}
+        self.taxa = {}
         self.qscores = None
         if self.matrix:
             self.taxa = dict([
@@ -45,40 +47,57 @@ class Metric(object):
         return self._nquartets
     
     def get_dist(self, taxon1, taxon2, sequence1, sequence2):
-        """
-        Gets distance between sequence1 and sequence2
-        """
+        """Gets distance between sequence1 and sequence2"""
         cachekey = tuple(sorted([self.taxa[taxon1], self.taxa[taxon2]]))
         # return 0 for identity matches
         if taxon1 == taxon2:
             return 0.0
-        # check cache
-        elif cachekey in self.cache:
-            return self.cache[cachekey]
-        else:
-            dist = self.dist(sequence1, sequence2)
-            self.cache[cachekey] = dist
-            return dist
+        if cachekey not in self.cache:
+            self.cache[cachekey] = self.dist(sequence1, sequence2)
+        return self.cache[cachekey]
     
     def _get_score_for_quartet(self, quartet):
         """
         Calculates score for given quartet
         
-        NOTE: needs to be overridden in subclass. Here it
-        just returns 0.0
+        NOTE: needs to be overridden in subclass. Here it just returns 0.0
         """
         return 0.0
     
-    def score(self):
+    def score(self, workers=1):
         """Returns a dictionary of metric scores"""
         if not self.qscores:
             self._setup_qscores()
+        
+        # prefill cache. This should speed up calculation as all get_dist calls
+        # will then be just cache hits, and it means we don't need to hook in 
+        # a multiprocessing manager on self.cache (which seems to cause the
+        # analysis to stall, preseumably because each process then has to wait
+        # for the cache to synchronise between processes).
+        for t1, t2 in combinations(self.matrix, 2):
+            self.get_dist(t1, t2, self.matrix[t1], self.matrix[t2])
+
         # go through quartet and calculate scores
-        for quartet in combinations(self.matrix, 4):
-            score = self._get_score_for_quartet(quartet)
-            for taxon in quartet:
-                self.qscores[taxon][0] += score
-                self.qscores[taxon][1] += 1
+        combs = list(combinations(self.matrix, 4))
+
+        # parallel process
+        if workers > 1:
+            with multiprocessing.Pool(workers) as pool:
+                scores = pool.map(self._get_score_for_quartet, combs)
+        
+            for quartet, d in zip(combs, scores):
+                for taxon in quartet:
+                    self.qscores[taxon][0] += d
+                    self.qscores[taxon][1] += 1
+
+        # single process
+        else:
+             for quartet in combs:
+                 d = self._get_score_for_quartet(quartet)
+                 for taxon in quartet:
+                    self.qscores[taxon][0] += d
+                    self.qscores[taxon][1] += 1
+        
         return self._summarise_taxon_scores()
     
     def _summarise_taxon_scores(self):
@@ -91,6 +110,8 @@ class Metric(object):
         return self.scores
     
     def pprint(self):
+        if not self.scores:
+            raise ValueError("Scores not calculated yet. Run .score()")
         max_len = max([len(_) for _ in self.matrix])
         for taxon in sorted(self.scores):
             print("%s\t%f" % (taxon.ljust(max_len + 1), self.scores[taxon]))
