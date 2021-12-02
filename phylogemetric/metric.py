@@ -84,12 +84,13 @@ class Metric(object):
         if workers > 1:
             with multiprocessing.Pool(workers) as pool:
                 scores = pool.map(self._get_score_for_quartet, combs)
-        
+                pool.terminate()
+                
             for quartet, d in zip(combs, scores):
                 for taxon in quartet:
                     self.qscores[taxon][0] += d
                     self.qscores[taxon][1] += 1
-
+            
         # single process
         else:
              for quartet in combs:
