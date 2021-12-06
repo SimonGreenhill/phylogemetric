@@ -21,7 +21,7 @@ class QResidualMetric(Metric):
         djk = self.get_dist(j, k, self.matrix[j], self.matrix[k])
         
         m1, m2, m3 = sorted([dij + dkl, dik + djl, dil + djk], reverse=True)
-        return pow((m1 - m2), 2)
+        return (quartet, pow((m1 - m2), 2))
     
     def _summarise_taxon_scores(self):
         """Summarises quartet scores for each taxon"""

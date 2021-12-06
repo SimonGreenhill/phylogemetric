@@ -5,6 +5,17 @@ from os import path
 
 description = "A python library for calculating the delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010)"
 
+try:
+    from pythran.dist import PythranExtension, PythranBuildExt
+    setup_args = {
+        'cmdclass': {"build_ext": PythranBuildExt},
+        'ext_modules': [PythranExtension('phylogemetric.dist', sources = ['phylogemetric/dist.py'])],
+    }
+except ImportError:
+    print("Not building Pythran extension")
+    setup_args = {}
+
+
 setup(
     name='phylogemetric',
     version='1.1.0',
@@ -34,7 +45,7 @@ setup(
     keywords='phylogenetics delta-score q-residual',
     packages=find_packages(),
     package_data={'phylogemetric': ['data/*.nex']},
-    install_requires=['python-nexus'],
+    install_requires=['python-nexus', 'pythran'],
     extras_require={
         'dev': ['wheel', 'twine'],
         'test': [
@@ -48,4 +59,5 @@ setup(
             'phylogemetric = phylogemetric.bin.phylogemetric:main'
         ],
     },
+    **setup_args
 )

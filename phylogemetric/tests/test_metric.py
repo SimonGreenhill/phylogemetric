@@ -4,19 +4,7 @@ import sys
 import pytest
 
 from phylogemetric.metric import Metric
-
-
-def test_distance():
-    m = Metric()
-    assert m.dist(['1', '0'], ['1', '0']) == 0.0
-    assert m.dist(['0', '0'], ['1', '1']) == 1.0
-    assert m.dist(['1', '1'], ['0', '1']) == 0.5
-    assert m.dist(['1', '1'], ['1', '0']) == 0.5
-    assert m.dist(['1', '?'], ['0', '1']) == 1.0
-    assert m.dist(['1', '1'], ['1', '?']) == 0.0
-    assert m.dist(['1', '-'], ['0', '1']) == 1.0
-    assert m.dist(['1', '1'], ['1', '-']) == 0.0
-    
+   
 
 def test_nquartets():
     assert Metric(dict([(_, []) for _ in range(0, 5)])).nquartets() == 5

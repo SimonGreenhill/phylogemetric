@@ -41,7 +41,7 @@ class DeltaScoreMetric(Metric):
         m1, m2, m3 = sorted([dij + dkl, dik + djl, dil + djk], reverse=True)
         denom = (m1 - m3)
         if denom == 0:
-            return 0.0
+            return (quartet, 0.0)
         else:
-            return (m1 - m2) / denom
+            return (quartet, (m1 - m2) / denom)
 

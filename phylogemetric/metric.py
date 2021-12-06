@@ -4,15 +4,19 @@ from fractions import Fraction
 from itertools import combinations
 from functools import reduce
 
+from phylogemetric.dist import hammingdist
+
 
 class Metric(object):
     """Base Metric Class"""
-    def __init__(self, matrix=None):
+    
+    def __init__(self, matrix=None, distance_function=hammingdist):
         self.matrix = matrix
         self.cache = {}
         self.scores = {}
         self.taxa = {}
         self.qscores = None
+        self.dist = hammingdist
         if self.matrix:
             self.taxa = dict([
                 (k, i) for (i, k) in enumerate(self.matrix.keys(), 1)
@@ -22,23 +26,8 @@ class Metric(object):
     def _setup_qscores(self):
         self.qscores = dict(zip(self.matrix, [[0, 0] for _ in self.matrix]))
     
-    def dist(self, a, b):
-        """
-        Calculates the Hamming Distance between two sequences
-        
-        Returns a value in the range of [1.0-0.0]
-        """
-        same, compared = 0.0, 0.0
-        for i in range(0, len(a)):
-            if a[i] in ('?', '-') or b[i] in ('?', '-'):
-                continue
-            elif a[i] == b[i]:
-                same += 1.0
-            compared += 1.0
-        return 1.0 - (same / compared)
-    
     def nquartets(self):
-        """Caclulates the number of quartets"""
+        """Calculates the number of quartets"""
         # http://stackoverflow.com/questions/3025162/statistics-combinations-in-python
         if not hasattr(self, "_nquartets"):
             self._nquartets = int(reduce(
@@ -46,14 +35,18 @@ class Metric(object):
             ))
         return self._nquartets
     
+    def get_cachekey(self, taxon1, taxon2):
+        """Returns a consistent cache key"""
+        return tuple(sorted([self.taxa[taxon1], self.taxa[taxon2]]))
+        
     def get_dist(self, taxon1, taxon2, sequence1, sequence2):
         """Gets distance between sequence1 and sequence2"""
-        cachekey = tuple(sorted([self.taxa[taxon1], self.taxa[taxon2]]))
+        cachekey = self.get_cachekey(taxon1, taxon2)
         # return 0 for identity matches
         if taxon1 == taxon2:
             return 0.0
         if cachekey not in self.cache:
-            self.cache[cachekey] = self.dist(sequence1, sequence2)
+            self.cache[cachekey] = self.dist("".join(sequence1), "".join(sequence2))
         return self.cache[cachekey]
     
     def _get_score_for_quartet(self, quartet):
@@ -62,42 +55,36 @@ class Metric(object):
         
         NOTE: needs to be overridden in subclass. Here it just returns 0.0
         """
-        return 0.0
-    
+        return (quartet, 0.0)
+        
     def score(self, workers=1):
         """Returns a dictionary of metric scores"""
         if not self.qscores:
             self._setup_qscores()
         
         # prefill cache. This should speed up calculation as all get_dist calls
-        # will then be just cache hits, and it means we don't need to hook in 
+        # will then be just cache hits, and it means we don't need to hook in
         # a multiprocessing manager on self.cache (which seems to cause the
-        # analysis to stall, preseumably because each process then has to wait
-        # for the cache to synchronise between processes).
+        # analysis to stall, presumably because each process then has to wait
+        # for locks).
         for t1, t2 in combinations(self.matrix, 2):
-            self.get_dist(t1, t2, self.matrix[t1], self.matrix[t2])
+           self.get_dist(t1, t2, self.matrix[t1], self.matrix[t2])
 
         # go through quartet and calculate scores
-        combs = list(combinations(self.matrix, 4))
-
-        # parallel process
-        if workers > 1:
-            with multiprocessing.Pool(workers) as pool:
+        combs = combinations(self.matrix, 4)
+        if workers > 1:  # parallel process
+            with multiprocessing.Pool(processes=workers) as pool:
                 scores = pool.map(self._get_score_for_quartet, combs)
-                pool.terminate()
-                
-            for quartet, d in zip(combs, scores):
-                for taxon in quartet:
-                    self.qscores[taxon][0] += d
-                    self.qscores[taxon][1] += 1
-            
-        # single process
-        else:
-             for quartet in combs:
-                 d = self._get_score_for_quartet(quartet)
-                 for taxon in quartet:
-                    self.qscores[taxon][0] += d
-                    self.qscores[taxon][1] += 1
+                pool.close()
+                pool.join()
+        
+        else:  # single process
+            scores = [self._get_score_for_quartet(c) for c in combs]
+
+        for quartet, d in scores:
+            for taxon in quartet:
+                self.qscores[taxon][0] += d
+                self.qscores[taxon][1] += 1
         
         return self._summarise_taxon_scores()
     
