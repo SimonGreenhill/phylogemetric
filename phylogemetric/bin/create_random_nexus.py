@@ -5,9 +5,9 @@ Generate random data for performance benchmark.
 from random import choice
 import argparse
 
-N_SEQUENCES = 100
-SEQ_LEN    = 100
-CHARACTERS = list("agct")
+N_SEQUENCES = 50
+SEQ_LEN    = 10000
+CHARACTERS = list("0000000001")
 
 HEADER = """#NEXUS
 Begin data;
@@ -27,7 +27,7 @@ def create_nex(nseq, seqlen, chars):
         name = "species{:03d}".format(i)
         for j in range(seqlen):
             seq += choice(chars)
-        nex += "{:<11s}{}\n".format(name, seq)
+        nex += "{:<11s}\t{}\n".format(name, seq)
     nex += FOOTER
     return nex
 

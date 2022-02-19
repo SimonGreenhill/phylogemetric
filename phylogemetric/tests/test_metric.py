@@ -16,7 +16,7 @@ def test_nquartets():
 
 
 def test_get_dist_same_taxon(simple_metric):
-    assert simple_metric.get_dist('A', 'A', [0, 1], [0, 1]) == 0.0
+    assert simple_metric.get_dist('A', 'A') == 0.0
 
 
 def test_regenerate_qscores(simple_metric):

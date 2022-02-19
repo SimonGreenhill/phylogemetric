@@ -8,6 +8,7 @@ __package__ = 'phylogemetric'
 
 import os
 import sys
+import logging
 import argparse
 
 try:
@@ -29,11 +30,20 @@ def parse_args(*args):
     parser.add_argument("method", help="Method [delta/qresidual]")
     parser.add_argument("filename", help="nexusfile")
     parser.add_argument(
-            '-w', "--workers", dest='workers',
-            action='store', type=int, default=1,
-            help="set number of workers"
+        '-w', "--workers",
+        action='store', type=int, default=1,
+        help="set number of workers"
     )
+    parser.add_argument(
+        "-log", "--loglevel",
+        default='warning',
+        help="Provide logging level. Example --loglevel debug, default=warning"
+    )
+
     args = parser.parse_args(args)
+
+    logging.basicConfig(level=args.loglevel.upper())
+    logging.info("Logging initialised to %s" % args.loglevel.upper())
     
     if not os.path.isfile(args.filename):
         raise IOError("File %s does not exist" % args.filename)
@@ -51,7 +61,7 @@ def parse_args(*args):
     
 
 def main(args=None):
-    if args is None:
+    if args is None:  # pragma: no cover
         args = sys.argv[1:]
     metric, filename, workers = parse_args(*args)
     nex = NexusReader(filename)

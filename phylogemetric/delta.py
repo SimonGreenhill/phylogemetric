@@ -32,12 +32,12 @@ class DeltaScoreMetric(Metric):
     def _get_score_for_quartet(self, quartet):
         """Calculates score for given quartet"""
         i, j, k, l = quartet
-        dij = self.get_dist(i, j, self.matrix[i], self.matrix[j])
-        dkl = self.get_dist(k, l, self.matrix[k], self.matrix[l])
-        dik = self.get_dist(i, k, self.matrix[i], self.matrix[k])
-        djl = self.get_dist(j, l, self.matrix[j], self.matrix[l])
-        dil = self.get_dist(i, l, self.matrix[i], self.matrix[l])
-        djk = self.get_dist(j, k, self.matrix[j], self.matrix[k])
+        dij = self.get_dist(i, j)
+        dkl = self.get_dist(k, l)
+        dik = self.get_dist(i, k)
+        djl = self.get_dist(j, l)
+        dil = self.get_dist(i, l)
+        djk = self.get_dist(j, k)
         m1, m2, m3 = sorted([dij + dkl, dik + djl, dil + djk], reverse=True)
         denom = (m1 - m3)
         if denom == 0:

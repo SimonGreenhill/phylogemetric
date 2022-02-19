@@ -13,12 +13,12 @@ class QResidualMetric(Metric):
     def _get_score_for_quartet(self, quartet):
         """Calculates score for given quartet"""
         i, j, k, l = quartet
-        dij = self.get_dist(i, j, self.matrix[i], self.matrix[j])
-        dkl = self.get_dist(k, l, self.matrix[k], self.matrix[l])
-        dik = self.get_dist(i, k, self.matrix[i], self.matrix[k])
-        djl = self.get_dist(j, l, self.matrix[j], self.matrix[l])
-        dil = self.get_dist(i, l, self.matrix[i], self.matrix[l])
-        djk = self.get_dist(j, k, self.matrix[j], self.matrix[k])
+        dij = self.get_dist(i, j)
+        dkl = self.get_dist(k, l)
+        dik = self.get_dist(i, k)
+        djl = self.get_dist(j, l)
+        dil = self.get_dist(i, l)
+        djk = self.get_dist(j, k)
         
         m1, m2, m3 = sorted([dij + dkl, dik + djl, dil + djk], reverse=True)
         return (quartet, pow((m1 - m2), 2))
@@ -35,6 +35,6 @@ class QResidualMetric(Metric):
     def get_average_distance(self):
         try:
             return sum(self.cache.values()) / len(self.cache.values())
-        except ZeroDivisionError:
+        except ZeroDivisionError:  # pragma: no cover
             warnings.warn("Zero Division")
             return 0
