@@ -16,8 +16,10 @@ try:
 except ImportError:  # pragma: no cover
     raise ImportError("Please install python-nexus")
 
+from . import __version__
 from . import DeltaScoreMetric
 from . import QResidualMetric
+
 
 def parse_args(*args):
     """
@@ -26,7 +28,7 @@ def parse_args(*args):
     Returns a tuple of (metric, filename)
     """
     descr = 'Calculates a phylogenetic network metric from a nexus file'
-    parser = argparse.ArgumentParser(description=descr)
+    parser = argparse.ArgumentParser(prog="phylogemetric", description=descr)
     parser.add_argument("method", help="Method [delta/qresidual]")
     parser.add_argument("filename", help="nexusfile")
     parser.add_argument(
@@ -39,7 +41,7 @@ def parse_args(*args):
         default='warning',
         help="Provide logging level. Example --loglevel debug, default=warning"
     )
-
+    parser.add_argument('-V', '--version', action='version', version='%(prog)s ' + __version__)
     args = parser.parse_args(args)
 
     logging.basicConfig(level=args.loglevel.upper())

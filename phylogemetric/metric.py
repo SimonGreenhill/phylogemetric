@@ -76,13 +76,12 @@ class Metric(object):
 
         if workers > 1:  # parallel process
             self.log.debug("score: starting work (%d workers)" % workers)
-            
+
             with multiprocessing.Pool(processes=workers) as pool:
                 #chunksize = int(self.nquartets() / workers) + 1
                 chunksize = 65535
-                chunksize = chunksize * 10
                 self.log.debug("score: set chunksize to %d" % chunksize)
-                
+
                 self.log.debug("_setup_cache: set up cache (n=%d)" % self.ncombinations(2))
                 jobs = [
                     (self.get_cachekey(t1, t2), self.matrix[t1], self.matrix[t2])
@@ -90,13 +89,13 @@ class Metric(object):
                     combinations(self.matrix, 2)
                 ]
                 self.cache = {k: d for k, d in pool.starmap(self.get_dist_parallel, jobs)}
-
+                
                 self.log.debug("score: _get_score_for_quartet (n=0 / %d = 0%%)" % self.nquartets())
                 for i, (quartet, d) in enumerate(pool.imap_unordered(self._get_score_for_quartet, quartets, chunksize=chunksize), 1):
                     for taxon in quartet:
                         self.qscores[taxon][0] += d
                         self.qscores[taxon][1] += 1
-                    
+
                     if i % chunksize == 0:
                         self.log.debug("score: _get_score_for_quartet (n=%d / %d = %0.2f%%)" % (i, self.nquartets(), (i / self.nquartets()) * 100))
 
@@ -112,7 +111,7 @@ class Metric(object):
                 self.get_cachekey(t1, t2): self.dist(self.matrix[t1], self.matrix[t2])
                 for t1, t2 in combinations(self.matrix, 2)
             }
-        
+
             self.log.debug("score: _get_score_for_quartet (n=0 / %d = 0%%)" % self.nquartets())
             for i, quartet in enumerate(quartets, 1):
                 _, d = self._get_score_for_quartet(quartet)
@@ -123,7 +122,7 @@ class Metric(object):
                     self.log.debug("score: _get_score_for_quartet (n=%d / %d = %0.2f%%)" % (i, self.nquartets(), (i / self.nquartets()) * 100))
 
         return self._summarise_taxon_scores()
-    
+
     def _summarise_taxon_scores(self):
         """Summarises quartet scores for each taxon"""
         self.log.debug("_summarise_taxon_scores")

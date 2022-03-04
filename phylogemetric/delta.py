@@ -22,6 +22,7 @@ from .metric import Metric
 #     - all distances need to be rescaled before computing Q.
 #         -> make average of distances between taxa =1
 #
+#import numba
 
 class DeltaScoreMetric(Metric):
     """
@@ -29,6 +30,7 @@ class DeltaScoreMetric(Metric):
 
     Returns a dictionary of delta scores for each taxon.
     """
+    #@numba.jit
     def _get_score_for_quartet(self, quartet):
         """Calculates score for given quartet"""
         i, j, k, l = quartet
