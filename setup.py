@@ -1,11 +1,20 @@
 #!/usr/bin/env python
+import os
+import re
 from setuptools import setup, find_packages
 from codecs import open
-from os import path
 
 description = "A python library for calculating the delta score (Holland et al. 2002) and Q-Residual (Gray et al. 2010)"
 
-from phylogemetric import __version__
+def get_version():
+    VERSIONFILE = os.path.join('phylogemetric', '__init__.py')
+    initfile_lines = open(VERSIONFILE, 'rt').readlines()
+    VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
+    for line in initfile_lines:
+        mo = re.search(VSRE, line, re.M)
+        if mo:
+            return mo.group(1)
+    raise RuntimeError('Unable to find version string in %s.' % (VERSIONFILE,))
 
 
 try:
@@ -21,7 +30,7 @@ except ImportError:
 
 setup(
     name='phylogemetric',
-    version=__version__,
+    version=get_version(),
     description=description,
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -48,7 +57,7 @@ setup(
     keywords='phylogenetics delta-score q-residual',
     packages=find_packages(),
     package_data={'phylogemetric': ['data/*.nex']},
-    install_requires=['python-nexus', 'numpy', 'pythran'],
+    install_requires=['numpy', 'python-nexus', 'pythran'],
     extras_require={
         'dev': ['wheel', 'twine'],
         'test': [

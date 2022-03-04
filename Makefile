@@ -1,13 +1,16 @@
 .PHONY: build release test clean
 
 build:
-	python setup.py sdist bdist_wheel
+	@python -m build
 
 release:
-	python setup.py sdist bdist_wheel upload
+	@twine upload --skip-existing --verbose dist/*
 
 test:
-	py.test --durations 0 --cov phylogemetric/
+	@tox
+
+quicktest:
+	@tox -q -e py39
 
 clean:
 	find . -name __pycache__ | xargs rm -rf
