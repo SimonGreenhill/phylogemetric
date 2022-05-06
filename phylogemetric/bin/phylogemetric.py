@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #coding=utf-8
+#type: ignore
 """Calculates a network metric"""
 __author__ = 'Simon J. Greenhill <simon@simon.net.nz>'
 __copyright__ = 'Copyright (c) 2015-2016 Simon J. Greenhill'
@@ -10,15 +11,16 @@ import os
 import sys
 import logging
 import argparse
+from typing import List, Optional, Tuple
 
 try:
-    from nexus import NexusReader
+    from nexus import NexusReader  # type ignore
 except ImportError:  # pragma: no cover
     raise ImportError("Please install python-nexus")
 
-from . import __version__
-from . import DeltaScoreMetric
-from . import QResidualMetric
+from phylogemetric import __version__
+from phylogemetric.delta import DeltaScoreMetric
+from phylogemetric.qresidual import QResidualMetric
 
 
 def parse_args(*args):
@@ -28,7 +30,9 @@ def parse_args(*args):
     Returns a tuple of (metric, filename)
     """
     descr = 'Calculates a phylogenetic network metric from a nexus file'
-    parser = argparse.ArgumentParser(prog="phylogemetric", description=descr)
+    parser = argparse.ArgumentParser(
+        prog="phylogemetric", description=descr
+    )
     parser.add_argument("method", help="Method [delta/qresidual]")
     parser.add_argument("filename", help="nexusfile")
     parser.add_argument(
@@ -44,7 +48,7 @@ def parse_args(*args):
     parser.add_argument('-V', '--version', action='version', version='%(prog)s ' + __version__)
     args = parser.parse_args(args)
 
-    logging.basicConfig(level=args.loglevel.upper())
+    logging.basicConfig(level=getattr(logging, args.loglevel.upper(), 'warning'))
     logging.info("Logging initialised to %s" % args.loglevel.upper())
     
     if not os.path.isfile(args.filename):
@@ -60,9 +64,9 @@ def parse_args(*args):
             % args.method
         )
     return (metric, args.filename, args.workers)
-    
 
-def main(args=None):
+
+def main(args: List[str] = None) -> None:
     if args is None:  # pragma: no cover
         args = sys.argv[1:]
     metric, filename, workers = parse_args(*args)

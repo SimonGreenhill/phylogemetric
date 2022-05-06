@@ -5,25 +5,25 @@ from phylogemetric.delta import DeltaScoreMetric
 from phylogemetric.qresidual import QResidualMetric
 
 # Data
-@pytest.fixture
+@pytest.fixture(scope="session")
 def simple_matrix():
     from phylogemetric.tests.data_simple import MATRIX
     return MATRIX
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def simple_expected():
     from phylogemetric.tests.data_simple import EXPECTED
     return EXPECTED
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def complex_matrix():
     from phylogemetric.tests.data_complex import MATRIX
     return MATRIX
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def complex_expected():
     from phylogemetric.tests.data_complex import EXPECTED
     return EXPECTED

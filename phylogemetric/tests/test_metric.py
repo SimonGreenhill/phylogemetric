@@ -19,12 +19,6 @@ def test_get_dist_same_taxon(simple_metric):
     assert simple_metric.get_dist('A', 'A') == 0.0
 
 
-def test_regenerate_qscores(simple_metric):
-    assert simple_metric.qscores is not None
-    simple_metric.qscores = None
-    simple_metric.score()
-    
-
 def test_pprint(capsys, simple_metric):
     simple_metric.score()
     simple_metric.pprint()
@@ -38,3 +32,8 @@ def test_pprint(capsys, simple_metric):
 def test_pprint_error(simple_metric):
     with pytest.raises(ValueError) as e:
         simple_metric.pprint()
+
+
+def test_get_cachekey(simple_metric):
+    assert simple_metric.get_cachekey('a', 'b') == 'a_vs_b'
+    assert simple_metric.get_cachekey('b', 'a') == 'a_vs_b'

@@ -150,6 +150,10 @@ http://dx.doi.org/10.21105/joss.00028
 
 ## Changelog:
 
+
+* 1.2.2: performance improvements
+* 1.2.1: bug fix
+* 1.2.0: performance improvements
 * 1.1.0:
 - Added support for multiple processes.
 - Removed python 2 support.

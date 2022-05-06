@@ -17,6 +17,7 @@ def get_version():
     raise RuntimeError('Unable to find version string in %s.' % (VERSIONFILE,))
 
 
+
 try:
     from pythran.dist import PythranExtension, PythranBuildExt
     setup_args = {
@@ -26,7 +27,6 @@ try:
 except ImportError:
     print("Not building Pythran extension")
     setup_args = {}
-
 
 setup(
     name='phylogemetric',
@@ -57,7 +57,7 @@ setup(
     keywords='phylogenetics delta-score q-residual',
     packages=find_packages(),
     package_data={'phylogemetric': ['data/*.nex']},
-    install_requires=['numpy', 'python-nexus', 'pythran'],
+    install_requires=['pythran', 'numpy', 'python-nexus'],
     extras_require={
         'dev': ['wheel', 'twine'],
         'test': [

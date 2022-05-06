@@ -1,7 +1,8 @@
 import warnings
 from math import pow
-
+from typing import Dict, Tuple
 from .metric import Metric
+from .metric import QuartetType
 
 
 class QResidualMetric(Metric):
@@ -10,7 +11,7 @@ class QResidualMetric(Metric):
     
     Returns a dictionary of Q-Residual scores for each taxon
     """
-    def _get_score_for_quartet(self, quartet):
+    def _get_score_for_quartet(self, quartet: QuartetType) -> Tuple[QuartetType, float]:
         """Calculates score for given quartet"""
         i, j, k, l = quartet
         dij = self.get_dist(i, j)
@@ -22,17 +23,16 @@ class QResidualMetric(Metric):
         
         m1, m2, m3 = sorted([dij + dkl, dik + djl, dil + djk], reverse=True)
         return (quartet, pow((m1 - m2), 2))
-    
-    def _summarise_taxon_scores(self):
+
+    def _summarise_taxon_scores(self) -> Dict[str, float]:
         """Summarises quartet scores for each taxon"""
         scale = pow(self.get_average_distance(), 2)
-        self.scores = {}
         for taxon in self.qscores:
             numerator = self.qscores[taxon][0] / scale
             self.scores[taxon] = numerator / self.qscores[taxon][1]
         return self.scores
-    
-    def get_average_distance(self):
+
+    def get_average_distance(self) -> float:
         try:
             return sum(self.cache.values()) / len(self.cache.values())
         except ZeroDivisionError:  # pragma: no cover

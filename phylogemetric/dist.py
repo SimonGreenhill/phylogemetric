@@ -1,5 +1,5 @@
 #pythran export hammingdist(str, str)
-def hammingdist(a, b):
+def hammingdist(a: str, b: str) -> float:
     """
     Calculates the Hamming Distance between two sequences
 

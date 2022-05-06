@@ -1,8 +1,8 @@
 """
 Generate random data for performance benchmark.
 """
-
 from random import choice
+from typing import Sequence
 import argparse
 
 N_SEQUENCES = 50
@@ -20,7 +20,7 @@ FOOTER = """;
 End;
 """
 
-def create_nex(nseq, seqlen, chars):
+def create_nex(nseq: int, seqlen: int, chars: Sequence[str]) -> str:
     nex = HEADER.format(nseq, seqlen)
     for i in range(nseq):
         seq = ""

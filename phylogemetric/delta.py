@@ -1,4 +1,6 @@
+from typing import Tuple
 from .metric import Metric
+from .metric import QuartetType
 
 # Delta Score
 #  - scores each taxon for how often it's involved in conflicting signal
@@ -31,7 +33,7 @@ class DeltaScoreMetric(Metric):
     Returns a dictionary of delta scores for each taxon.
     """
     #@numba.jit
-    def _get_score_for_quartet(self, quartet):
+    def _get_score_for_quartet(self, quartet: QuartetType) -> Tuple[QuartetType, float]:
         """Calculates score for given quartet"""
         i, j, k, l = quartet
         dij = self.get_dist(i, j)
