@@ -17,15 +17,12 @@ NumericType = Union[float, int]
 class Metric(object):
     """Base Metric Class"""
     
-    def __init__(self,
-        matrix: Optional[Matrix] = None,
-        distance_function: Callable[[str, str], float] = hammingdist):
-        
+    def __init__(self, matrix: Optional[Matrix] = None):
         self.log = logging.getLogger(__name__)
         self.scores: dict[str, float] = {}
         self.taxa: list[str] = []
         self.cache: dict[str, float] = {}
-        self.dist = distance_function
+        self.dist = hammingdist
 
         if matrix:
             #self.matrix: dict[str, str] = cast(dict, matrix)  # enforce type
