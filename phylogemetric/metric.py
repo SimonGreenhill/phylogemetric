@@ -122,5 +122,5 @@ class Metric(object):
             raise ValueError("Scores not calculated yet. Run .score()")
         max_len = max([len(_) for _ in self.matrix])
         for taxon in sorted(self.scores):
-            print("%s\t%f" % (taxon.ljust(max_len + 1), self.scores[taxon]))
+            print("%s\t%f" % (taxon.ljust(max_len), self.scores[taxon]))
 
