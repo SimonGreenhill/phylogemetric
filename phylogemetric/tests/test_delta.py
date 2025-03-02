@@ -1,4 +1,6 @@
 import pytest
+from phylogemetric.delta import DeltaScoreMetric
+
 
 def test_simple(simple_delta, simple_expected):
     for taxon in simple_expected:
@@ -17,3 +19,10 @@ def test_complex(complex_delta, complex_expected):
     # cache used? 
     assert len(complex_delta.cache) == 1225, 'should be 1225 things in cache'
 
+
+
+def test_save_all_quartets(simple_matrix):
+    d = DeltaScoreMetric(simple_matrix)
+    d.score(save_all_quartets=True)
+    assert len(d.saved_quartets) == d.nquartets()
+    assert d.saved_quartets[('A', 'B', 'C', 'D')] == 0.19999999999999982

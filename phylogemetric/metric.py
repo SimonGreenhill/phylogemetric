@@ -69,9 +69,10 @@ class Metric(object):
         """
         return (quartet, 0.0)
         
-    def score(self, workers: int = 1) -> Dict[str, float]:
+    def score(self, workers: int = 1, save_all_quartets=False) -> Dict[str, float]:
         """Returns a dictionary of metric scores"""
         # go through quartet and calculate scores
+        self.saved_quartets = {}
         self.log.debug("score: calculate combinations")
         quartets = combinations(self.matrix, 4)
 
@@ -89,6 +90,9 @@ class Metric(object):
                 self.log.debug("score: set chunksize to %d" % chunksize)
                 self.log.debug("score: _get_score_for_quartet (n=%d)" % self.nquartets())
                 for i, (quartet, d) in enumerate(pool.imap_unordered(self._get_score_for_quartet, quartets, chunksize=chunksize), 1):
+                    if save_all_quartets:
+                        self.saved_quartets[quartet] = d
+                    
                     for taxon in quartet:
                         self.qscores[taxon][0] += d
                         self.qscores[taxon][1] += 1
@@ -102,6 +106,10 @@ class Metric(object):
             self.log.debug("score: _get_score_for_quartet (n=%d)" % self.nquartets())
             for i, quartet in enumerate(quartets, 1):
                 _, d = self._get_score_for_quartet(quartet)
+
+                if save_all_quartets:
+                    self.saved_quartets[quartet] = d
+                
                 for taxon in quartet:
                     self.qscores[taxon][0] += d
                     self.qscores[taxon][1] += 1
